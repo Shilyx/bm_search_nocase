@@ -32,11 +32,8 @@
  *
  */
 
-#include "config.h"
+#include "su_bm.h"
 
-#include <sofia-sip/su_bm.h>
-
-#include <sys/types.h>
 #include <stddef.h>
 #include <limits.h>
 #include <ctype.h>

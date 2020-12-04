@@ -35,26 +35,21 @@
  * @date Created: Mon Apr 11 17:03:13 2005 ppessi
  */
 
-#ifndef SU_TYPES_H
-#include <sofia-sip/su_types.h>
-#endif
+#include <stdint.h>
 
-SOFIA_BEGIN_DECLS
-
+struct bw_fwd_table;
 typedef struct bw_fwd_table bm_fwd_table_t;
 
-SOFIAPUBFUN bm_fwd_table_t *bm_memmem_study(char const *needle, size_t nlen);
+bm_fwd_table_t *bm_memmem_study(char const *needle, size_t nlen);
 
-SOFIAPUBFUN char *bm_memmem(char const *haystack, size_t hlen,
-			    char const *needle, size_t nlen,
-			    bm_fwd_table_t *fwd);
+char *bm_memmem(char const *haystack, size_t hlen,
+    char const *needle, size_t nlen,
+    bm_fwd_table_t *fwd);
 
-SOFIAPUBFUN bm_fwd_table_t *bm_memcasemem_study(char const *needle, size_t);
+bm_fwd_table_t *bm_memcasemem_study(char const *needle, size_t);
 
-SOFIAPUBFUN char *bm_memcasemem(char const *haystack, size_t hlen,
+char *bm_memcasemem(char const *haystack, size_t hlen,
 				char const *needle, size_t nlen,
 				bm_fwd_table_t *fwd);
-
-SOFIA_END_DECLS
 
 #endif /* !defined SU_MEMMEM_H */

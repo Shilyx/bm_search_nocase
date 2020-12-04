@@ -172,9 +172,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bm_search_nocase.cpp" />
+    <ClCompile Include="bm_search_nocase_test.cpp" />
     <ClCompile Include="su_bm.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bm_search_nocase.h" />
     <ClInclude Include="su_bm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
