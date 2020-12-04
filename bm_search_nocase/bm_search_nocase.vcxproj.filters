@@ -18,5 +18,13 @@
     <ClCompile Include="bm_search_nocase.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="su_bm.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="su_bm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
