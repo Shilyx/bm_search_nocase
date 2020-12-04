@@ -171,7 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bm_search_nocase.cpp" />
+    <ClCompile Include="bm_search_nocase.c" />
     <ClCompile Include="bm_search_nocase_test.cpp" />
     <ClCompile Include="su_bm.c" />
   </ItemGroup>

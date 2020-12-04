@@ -21,7 +21,7 @@
     <ClCompile Include="bm_search_nocase_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="bm_search_nocase.cpp">
+    <ClCompile Include="bm_search_nocase.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
