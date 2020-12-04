@@ -37,19 +37,28 @@
 
 #include <stdint.h>
 
-struct bw_fwd_table;
-typedef struct bw_fwd_table bm_fwd_table_t;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-bm_fwd_table_t *bm_memmem_study(char const *needle, size_t nlen);
+    struct bw_fwd_table;
+    typedef struct bw_fwd_table bm_fwd_table_t;
 
-char *bm_memmem(char const *haystack, size_t hlen,
-    char const *needle, size_t nlen,
-    bm_fwd_table_t *fwd);
+    bm_fwd_table_t *bm_memmem_study(char const *needle, size_t nlen);
 
-bm_fwd_table_t *bm_memcasemem_study(char const *needle, size_t);
+    char *bm_memmem(char const *haystack, size_t hlen,
+                    char const *needle, size_t nlen,
+                    bm_fwd_table_t *fwd);
 
-char *bm_memcasemem(char const *haystack, size_t hlen,
-				char const *needle, size_t nlen,
-				bm_fwd_table_t *fwd);
+    bm_fwd_table_t *bm_memcasemem_study(char const *needle, size_t);
+
+    char *bm_memcasemem(char const *haystack, size_t hlen,
+                        char const *needle, size_t nlen,
+                        bm_fwd_table_t *fwd);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !defined SU_MEMMEM_H */

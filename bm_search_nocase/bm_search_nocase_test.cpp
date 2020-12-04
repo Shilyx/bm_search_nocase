@@ -57,9 +57,17 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+#include "bm_search_nocase.h"
 
-    _getch();
+int main(int argc, char *argv[]) {
+    const char *str = "bm_Nosearch_nocasebm_search_nocase";
+    const char *needle = "no";
+    const wchar_t *strW = L"bm_Nosearch_nocasebm_search_nocase";
+    const wchar_t *needleW = L"no";
+    cout << bm_search(str, strlen(str), needle, strlen(needle)) << endl;
+    cout << bm_isearch(str, strlen(str), needle, strlen(needle)) << endl;
+    wcout << bm_search16(strW, wcslen(strW), needleW, wcslen(needleW)) << endl;
+    wcout << bm_isearch16(strW, wcslen(strW), needleW, wcslen(needleW)) << endl;
+
     return 0;
 }

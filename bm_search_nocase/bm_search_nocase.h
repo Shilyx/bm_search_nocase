@@ -3,9 +3,9 @@
 
 #include <tchar.h>
 
-const char* bm_search(const char* str, const char* str_search);
-const char* bm_isearch(const char* str, const char* str_search);
-const wchar_t* bm_search16(const wchar_t* str, const wchar_t* str_search);
-const wchar_t* bm_isearch16(const wchar_t* str, const wchar_t* str_search);
+const char* bm_search(const char* str, size_t str_len, const char* needle, size_t needle_len);
+const char* bm_isearch(const char* str, size_t str_len, const char* needle, size_t needle_len);
+const wchar_t* bm_search16(const wchar_t* str, size_t str_len, const wchar_t* needle, size_t needle_len);
+const wchar_t* bm_isearch16(const wchar_t* str, size_t str_len, const wchar_t* needle, size_t needle_len);
 
 #endif
