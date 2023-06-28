@@ -51,19 +51,19 @@ struct bw_fwd_table {
 /** Build forward skip table #bm_fwd_table_t for Boyer-Moore algorithm. */
 static
 bm_fwd_table_t *
-bm_memmem_study0(char const *needle, size_t nlen, bm_fwd_table_t *fwd)
+bm_memmem_study0(char const *substr, size_t nlen, bm_fwd_table_t *fwd)
 {
   size_t i;
 
   if (nlen >= UCHAR_MAX) {
-    needle += nlen - UCHAR_MAX;
+    substr += nlen - UCHAR_MAX;
     nlen = UCHAR_MAX;
   }
 
   memset(&fwd->table, (unsigned char)nlen, sizeof fwd->table);
 
   for (i = 0; i < nlen; i++) {
-    fwd->table[(unsigned short)needle[i]] = (unsigned char)(nlen - i - 1);
+    fwd->table[(unsigned short)substr[i]] = (unsigned char)(nlen - i - 1);
   }
 
   return fwd;
@@ -92,12 +92,12 @@ bm_memmem_study0(char const *needle, size_t nlen, bm_fwd_table_t *fwd)
  * @ingroup su_bm
  */
 bm_fwd_table_t *
-bm_memmem_study(char const *needle, size_t nlen)
+bm_memmem_study(char const *substr, size_t nlen)
 {
   bm_fwd_table_t *fwd = malloc(sizeof *fwd);
 
   if (fwd)
-    bm_memmem_study0(needle, nlen, fwd);
+    bm_memmem_study0(substr, nlen, fwd);
 
   return fwd;
 }
@@ -106,13 +106,13 @@ bm_memmem_study(char const *needle, size_t nlen)
 /* Naive implementation of memmem() */
 static void *
 memmem(const void *haystack, size_t haystacklen,
-       const void *needle, size_t needlelen)
+       const void *substr, size_t substrlen)
 {
   size_t i;
   char const *hs = haystack;
 
-  for (i = 0; i <= haystacklen - needlelen; i++) {
-    if (memcmp(hs + i, needle, needlelen) == 0)
+  for (i = 0; i <= haystacklen - substrlen; i++) {
+    if (memcmp(hs + i, substr, substrlen) == 0)
       return (void *)(hs + i);
   }
 
@@ -125,7 +125,7 @@ memmem(const void *haystack, size_t haystacklen,
  */
 char *
 bm_memmem(char const *haystack, size_t hlen,
-	  char const *needle, size_t nlen,
+	  char const *substr, size_t nlen,
 	  bm_fwd_table_t *fwd)
 {
   size_t i, j;
@@ -133,29 +133,29 @@ bm_memmem(char const *haystack, size_t hlen,
 
   if (nlen == 0)
     return (char *)haystack;
-  if (needle == NULL || haystack == NULL || nlen > hlen)
+  if (substr == NULL || haystack == NULL || nlen > hlen)
     return NULL;
 
   if (nlen == 1) {
     for (i = 0; i < hlen; i++)
-      if (haystack[i] == needle[0])
+      if (haystack[i] == substr[0])
 	return (char *)haystack + i;
     return NULL;
   }
 
   if (!fwd) {
     if (nlen < 8 * sizeof (long)) /* Just guessing */
-      return memmem(haystack, hlen, needle, nlen);
+      return memmem(haystack, hlen, substr, nlen);
 
-    fwd = bm_memmem_study0(needle, nlen, fwd0);
+    fwd = bm_memmem_study0(substr, nlen, fwd0);
   }
 
   for (i = j = nlen - 1; i < hlen;) {
     unsigned char h = haystack[i];
-    if (h == needle[j]) {
+    if (h == substr[j]) {
       TORTURELOG(("match \"%s\" at %u\nwith  %*s\"%.*s*%s\": %s\n",
 		  haystack, (unsigned)i,
-		  (int)(i - j), "", (int)j, needle, needle + j + 1,
+		  (int)(i - j), "", (int)j, substr, substr + j + 1,
 		  j == 0 ? "match!" : "back by 1"));
       if (j == 0)
 	return (char *)haystack + i;
@@ -167,7 +167,7 @@ bm_memmem(char const *haystack, size_t hlen,
 		    "last  %*s\"%.*s*%s\": (by %u)\n",
 		    haystack, (unsigned)i,
 		    (int)(i - j), "",
-		    (int)j, needle, needle + j + 1, fwd->table[h]));
+		    (int)j, substr, substr + j + 1, fwd->table[h]));
       	i += fwd->table[h];
       }
       else {
@@ -175,7 +175,7 @@ bm_memmem(char const *haystack, size_t hlen,
 		    "2nd   %*s\"%.*s*%s\": (by %u)\n",
 		    haystack, (unsigned)i,
 		    (int)(i - j), "",
-		    (int)j, needle, needle + j + 1, (unsigned)(nlen - j)));
+		    (int)j, substr, substr + j + 1, (unsigned)(nlen - j)));
 	i += nlen - j;
       }
       j = nlen - 1;
@@ -189,12 +189,12 @@ bm_memmem(char const *haystack, size_t hlen,
 /** Build forward skip table for Boyer-Moore algorithm */
 static
 bm_fwd_table_t *
-bm_memcasemem_study0(char const *needle, size_t nlen, bm_fwd_table_t *fwd)
+bm_memcasemem_study0(char const *substr, size_t nlen, bm_fwd_table_t *fwd)
 {
   size_t i;
 
   if (nlen >= UCHAR_MAX) {
-    needle += nlen - UCHAR_MAX;
+    substr += nlen - UCHAR_MAX;
     nlen = UCHAR_MAX;
   }
 
@@ -202,7 +202,7 @@ bm_memcasemem_study0(char const *needle, size_t nlen, bm_fwd_table_t *fwd)
     fwd->table[i] = (unsigned char)nlen;
 
   for (i = 0; i < nlen; i++) {
-    unsigned char n = tolower(needle[i]);
+    unsigned char n = tolower(substr[i]);
     fwd->table[n] = (unsigned char)(nlen - i - 1);
   }
 
@@ -213,12 +213,12 @@ bm_memcasemem_study0(char const *needle, size_t nlen, bm_fwd_table_t *fwd)
  * @ingroup su_bm
  */
 bm_fwd_table_t *
-bm_memcasemem_study(char const *needle, size_t nlen)
+bm_memcasemem_study(char const *substr, size_t nlen)
 {
   bm_fwd_table_t *fwd = malloc(sizeof *fwd);
 
   if (fwd)
-    bm_memcasemem_study0(needle, nlen, fwd);
+    bm_memcasemem_study0(substr, nlen, fwd);
 
   return fwd;
 }
@@ -228,7 +228,7 @@ bm_memcasemem_study(char const *needle, size_t nlen)
  */
 char *
 bm_memcasemem(char const *haystack, size_t hlen,
-	      char const *needle, size_t nlen,
+	      char const *substr, size_t nlen,
 	      bm_fwd_table_t *fwd)
 {
   size_t i, j;
@@ -236,22 +236,22 @@ bm_memcasemem(char const *haystack, size_t hlen,
 
   if (nlen == 0)
     return (char *)haystack;
-  if (needle == 0 || haystack == 0 || nlen > hlen)
+  if (substr == 0 || haystack == 0 || nlen > hlen)
     return NULL;
 
   if (nlen == 1) {
     for (i = 0; i < hlen; i++)
-      if (haystack[i] == needle[0])
+      if (haystack[i] == substr[0])
 	return (char *)haystack + i;
     return NULL;
   }
 
   if (!fwd) {
-    fwd = bm_memcasemem_study0(needle, nlen, fwd0);
+    fwd = bm_memcasemem_study0(substr, nlen, fwd0);
   }
 
   for (i = j = nlen - 1; i < hlen;) {
-    unsigned char h = haystack[i], n = needle[j];
+    unsigned char h = haystack[i], n = substr[j];
     if (isupper(h))
       h = tolower(h);
     if (isupper(n))
@@ -261,7 +261,7 @@ bm_memcasemem(char const *haystack, size_t hlen,
       TORTURELOG(("match \"%s\" at %u\n"
 		  "with  %*s\"%.*s*%s\": %s\n",
 		  haystack, (unsigned)i,
-		  (int)(i - j), "", (int)j, needle, needle + j + 1,
+		  (int)(i - j), "", (int)j, substr, substr + j + 1,
 		  j == 0 ? "match!" : "back by 1"));
       if (j == 0)
 	return (char *)haystack + i;
@@ -272,7 +272,7 @@ bm_memcasemem(char const *haystack, size_t hlen,
 	TORTURELOG(("match \"%s\" at %u\n"
 		    "last  %*s\"%.*s*%s\": (by %u)\n",
 		    haystack, (unsigned)i,
-		    (int)(i - j), "", (int)j, needle, needle + j + 1,
+		    (int)(i - j), "", (int)j, substr, substr + j + 1,
 		    fwd->table[h]));
       	i += fwd->table[h];
       }
@@ -280,7 +280,7 @@ bm_memcasemem(char const *haystack, size_t hlen,
 	TORTURELOG(("match \"%s\" at %u\n"
 		    "2nd   %*s\"%.*s*%s\": (by %u)\n",
 		    haystack, (unsigned)i,
-		    (int)(i - j), "", (int)j, needle, needle + j + 1,
+		    (int)(i - j), "", (int)j, substr, substr + j + 1,
 		    (unsigned)(nlen - j)));
 	i += nlen - j;
       }

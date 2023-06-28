@@ -12,10 +12,10 @@
 extern "C" {
 #endif
 
-const char* bm_search(const char* str, size_t str_len, const char* needle, size_t needle_len);
-const char* bm_isearch(const char* str, size_t str_len, const char* needle, size_t needle_len);
-const wchar_t* bm_search16(const wchar_t* str, size_t str_len, const wchar_t* needle, size_t needle_len);
-const wchar_t* bm_isearch16(const wchar_t* str, size_t str_len, const wchar_t* needle, size_t needle_len);
+const char* bm_search_bin(const char* str, size_t str_len, const char* substr, size_t substr_len);
+const char* bm_isearch_bin(const char* str, size_t str_len, const char* substr, size_t substr_len);
+const wchar_t* bm_search16_bin(const wchar_t* str, size_t str_len, const wchar_t* substr, size_t substr_len);
+const wchar_t* bm_isearch16_bin(const wchar_t* str, size_t str_len, const wchar_t* substr, size_t substr_len);
 
 #ifdef __cplusplus
 }

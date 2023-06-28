@@ -44,16 +44,16 @@ extern "C" {
     struct bw_fwd_table;
     typedef struct bw_fwd_table bm_fwd_table_t;
 
-    bm_fwd_table_t *bm_memmem_study(char const *needle, size_t nlen);
+    bm_fwd_table_t *bm_memmem_study(char const *substr, size_t nlen);
 
     char *bm_memmem(char const *haystack, size_t hlen,
-                    char const *needle, size_t nlen,
+                    char const *substr, size_t nlen,
                     bm_fwd_table_t *fwd);
 
-    bm_fwd_table_t *bm_memcasemem_study(char const *needle, size_t);
+    bm_fwd_table_t *bm_memcasemem_study(char const *substr, size_t);
 
     char *bm_memcasemem(char const *haystack, size_t hlen,
-                        char const *needle, size_t nlen,
+                        char const *substr, size_t nlen,
                         bm_fwd_table_t *fwd);
 
 
