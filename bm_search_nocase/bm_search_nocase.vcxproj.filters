@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="su_bm.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="bm_search_nocase_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -26,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="su_bm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="bm_search_nocase.h">
       <Filter>头文件</Filter>
     </ClInclude>
