@@ -29,3 +29,19 @@ const wchar_t* bm_isearch16_bin(const wchar_t* str, size_t str_len, const wchar_
     free(tab);
     return (const wchar_t*)res;
 }
+
+const char* bm_search(const char* str, size_t str_len, const char* substr) {
+    return bm_search_bin(str, str_len, substr, strlen(substr));
+}
+
+const char* bm_isearch(const char* str, size_t str_len, const char* substr) {
+    return bm_isearch_bin(str, str_len, substr, strlen(substr));
+}
+
+const wchar_t* bm_search16(const wchar_t* str, size_t str_len, const wchar_t* substr) {
+    return bm_search16_bin(str, str_len, substr, wcslen(substr));
+}
+
+const wchar_t* bm_isearch16(const wchar_t* str, size_t str_len, const wchar_t* substr) {
+    return bm_isearch16_bin(str, str_len, substr, wcslen(substr));
+}
